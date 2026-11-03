@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Jasper Ling Bing Yao — IT student at UNIMAS. Portfolio of web systems and dashboards.">
+<title>Jasper Ling Bing Yao — IT Student</title>
+
+<script>
+  try {
+    var saved = localStorage.getItem('jl-theme');
+    if (saved) document.documentElement.dataset.theme = saved;
+    else if (matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.dataset.theme = 'dark';
+  } catch (e) {}
+</script>
+
+<style>
+:root {
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --text: #1a1d26;
+  --muted: #5b6472;
+  --accent: #2c56e0;
+  --accent-soft: #e7edff;
+  --border: #e2e6ef;
+  --danger: #b3261e;
+  --shadow: 0 8px 24px rgba(20, 27, 51, .07);
+  --radius: 14px;
+  --max: 1040px;
+}
+[data-theme="dark"] {
+  --bg: #0e1117;
+  --surface: #161b24;
+  --text: #eef2f8;
+  --muted: #a7b2c4;
+  --accent: #8fa8ff;
+  --accent-soft: #1e2740;
+  --border: #252e3d;
+  --danger: #ff9a90;
+  --shadow: 0 8px 24px rgba(0, 0, 0, .5);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background .25s, color .25s;
+}
+
+h1, h2, h3 { margin: 0 0 .5rem; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 5vw, 2.9rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+p  { margin: 0 0 1rem; }
+a  { color: var(--accent); }
+
+.container { width: min(100% - 2rem, var(--max)); margin-inline: auto; }
+.section   { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+}
+
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.skip-link {
+  position: absolute; left: 1rem; top: -100px; z-index: 100;
+  background: var(--accent); color: #fff;
+  padding: .7rem 1.2rem; border-radius: 0 0 8px 8px;
+  font-weight: 700; text-decoration: none;
+  transition: top .2s;
+}
+.skip-link:focus { top: 0; }
+
+/* Scroll progress */
+.scroll-progress {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0;
+  background: linear-gradient(90deg, #3b6cff, #7b5cff);
+  z-index: 100;
+  transition: width .1s linear;
+}
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; gap: 1rem;
+}
+
+.brand {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-weight: 700; text-decoration: none; color: var(--text);
+}
+.brand-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  display: grid; place-items: center;
+  font-size: .8rem; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, #3b6cff, #7b5cff);
+}
+
+.nav-menu { display: flex; gap: .2rem; list-style: none; margin: 0; padding: 0; }
+.nav-link {
+  display: inline-block; padding: .5rem .8rem; border-radius: 8px;
+  font-size: .9rem; font-weight: 600; text-decoration: none;
+  color: var(--muted);
+  transition: color .2s, background .2s;
+}
+.nav-link:hover { color: var(--text); background: var(--accent-soft); }
+.nav-link.active { color: var(--accent); background: var(--accent-soft); }
+
+.icon-btn {
+  width: 38px; height: 38px; display: grid; place-items: center;
+  border-radius: 9px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  font-size: 1rem; cursor: pointer;
+  transition: background .2s;
+}
+.icon-btn:hover { background: var(--accent-soft); }
+
+.nav-actions { display: flex; gap: .5rem; }
+.nav-toggle { display: none; }
+
+@media (max-width: 760px) {
+  .nav-toggle { display: grid; }
+  .nav-menu {
+    position: absolute; top: 64px; left: 0; right: 0;
+    flex-direction: column; padding: .6rem; gap: .2rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: none;
+  }
+  .nav-menu.open { display: flex; }
+  .nav-link { padding: .75rem 1rem; }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  padding: .7rem 1.2rem; border-radius: 10px;
+  font: inherit; font-size: .9rem; font-weight: 600;
+  text-decoration: none; border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .15s, filter .2s, background .2s;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary {
+  background: linear-gradient(135deg, #3b6cff, #7b5cff);
+  color: #fff;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  border-color: var(--border);
+}
+.btn-ghost:hover { background: var(--accent-soft); }
+.btn-small { padding: .45rem .9rem; font-size: .82rem; }
+
+/* Hero */
+.hero { padding: clamp(2rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem); text-align: center; }
+
+.avatar {
+  width: 88px; height: 88px; margin: 0 auto 1rem;
+  border-radius: 50%; display: grid; place-items: center;
+  font-size: 1.7rem; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, #3b6cff, #7b5cff);
+  box-shadow: 0 10px 28px rgba(59, 108, 255, .3);
+}
+
+.role { color: var(--accent); font-weight: 600; margin-bottom: .8rem; }
+.hero-intro { max-width: 52ch; margin: 0 auto 1.4rem; color: var(--muted); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
+
+/* Section heads */
+.section-head { margin-bottom: 1.75rem; }
+.eyebrow {
+  text-transform: uppercase; letter-spacing: .14em;
+  font-size: .75rem; font-weight: 700;
+  color: var(--accent); margin-bottom: .4rem;
+}
+
+/* Filters */
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.chip {
+  padding: .45rem 1rem; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--muted); font: inherit; font-size: .85rem; font-weight: 600;
+  cursor: pointer;
+  transition: color .2s, background .2s, border-color .2s;
+}
+.chip:hover { color: var(--text); border-color: var(--accent); }
+.chip.is-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Projects */
+.project-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.project-card {
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.project-card:nth-child(2) { border-top-color: #0f766e; }
+.project-card:nth-child(3) { border-top-color: #7c3aed; }
+.project-card:nth-child(4) { border-top-color: #b45309; }
+.project-card:nth-child(5) { border-top-color: #be123c; }
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.project-card h3 { font-size: 1rem; }
+.project-card p { color: var(--muted); font-size: .9rem; margin-bottom: .85rem; flex: 1; }
+
+.tag-list {
+  display: flex; flex-wrap: wrap; gap: .35rem;
+  list-style: none; margin: 0 0 .85rem; padding: 0;
+}
+.tag-list li {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-soft);
+  padding: .2rem .55rem; border-radius: 99px;
+}
+
+/* Modal */
+.modal {
+  position: fixed; inset: 0; z-index: 120;
+  display: grid; place-items: center;
+  padding: 1.25rem;
+  background: rgba(8, 11, 16, .65);
+  overflow-y: auto;
+}
+.modal-card {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: 88vh; overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.9rem;
+  box-shadow: var(--shadow);
+}
+.modal-card h3 { font-size: .95rem; margin: 1.25rem 0 .45rem; }
+.modal-card ul { padding-left: 1.1rem; margin: 0; color: var(--muted); font-size: .9rem; }
+.modal-card li { margin-bottom: .35rem; }
+.modal-close { position: absolute; top: .8rem; right: .8rem; }
+.modal-meta {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--accent); font-weight: 700; margin-bottom: .45rem;
+}
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; }
+@media (max-width: 780px) { .about-grid { grid-template-columns: 1fr; } }
+
+.skill-tags {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  list-style: none; margin: 1rem 0 0; padding: 0;
+}
+.skill-tags li {
+  padding: .4rem .85rem; border-radius: 99px;
+  background: var(--accent-soft); color: var(--accent);
+  font-size: .85rem; font-weight: 600;
+}
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1fr .8fr; gap: 1.5rem; }
+@media (max-width: 780px) { .contact-grid { grid-template-columns: 1fr; } }
+
+.form-field { margin-bottom: 1rem; }
+label { display: block; font-weight: 600; font-size: .88rem; margin-bottom: .3rem; }
+
+input, textarea {
+  width: 100%; padding: .7rem .9rem;
+  border-radius: 10px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  font: inherit; font-size: .9rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+textarea { resize: vertical; min-height: 120px; }
+input:focus-visible, textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 108, 255, .25);
+}
+input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--danger); }
+
+.field-error {
+  display: block; min-height: 1.1em;
+  margin-top: .25rem; font-size: .8rem;
+  color: var(--danger);
+}
+.form-status {
+  margin-top: .75rem; font-size: .9rem; font-weight: 600;
+  color: var(--accent); min-height: 1.4em;
+}
+
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.contact-card ul {
+  list-style: none; margin: .75rem 0 0; padding: 0;
+  display: grid; gap: .6rem; font-size: .9rem;
+}
+.contact-card a {
+  color: var(--text); text-decoration: none;
+  border-bottom: 2px solid var(--accent-soft);
+}
+.contact-card a:hover { border-bottom-color: var(--accent); }
+
+.copy-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.btn-copy {
+  padding: .2rem .6rem; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font: inherit; font-size: .78rem; font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.btn-copy:hover { background: var(--accent-soft); color: var(--accent); }
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* Footer & back-to-top */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  font-size: .85rem; color: var(--muted);
+}
+.footer-inner {
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; gap: .75rem;
+}
+.footer-inner a { color: var(--muted); text-decoration: none; }
+.footer-inner a:hover { color: var(--accent); }
+
+.to-top {
+  position: fixed; right: 1rem; bottom: 1rem;
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  font-size: 1rem; cursor: pointer;
+  box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .25s, transform .25s;
+}
+.to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .001ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="scroll-progress" id="scroll-progress" role="progressbar"
+     aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#home">
+        <span class="brand-mark" aria-hidden="true">JL</span>
+        Jasper Ling
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a class="nav-link" href="#home">Home</a></li>
+        <li><a class="nav-link" href="#projects">Projects</a></li>
+        <li><a class="nav-link" href="#about">About</a></li>
+        <li><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-toggle" type="button"
+                aria-label="Switch to dark theme" aria-pressed="false">
+          <span aria-hidden="true">🌙</span>
+        </button>
+        <button class="icon-btn nav-toggle" id="nav-toggle" type="button"
+                aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+          <span aria-hidden="true">☰</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="home" class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="avatar" aria-hidden="true">JL</div>
+      <h1 id="hero-title">Jasper Ling Bing Yao</h1>
+      <p class="role">IT Student · Web Developer</p>
+      <p class="hero-intro">
+        I'm an IT student at Universiti Malaysia Sarawak. I build small, useful
+        web systems and dashboards with plain HTML, CSS and JavaScript — and I'm
+        always learning something new.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">See my projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section" aria-labelledby="projects-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Portfolio</p>
+        <h2 id="projects-title">Systems I've built</h2>
+        <p style="color:var(--muted)">
+          Five systems and dashboards, built with plain HTML, CSS and vanilla JavaScript.
+          Filter by type, or open any project for the full write-up.
+        </p>
+      </header>
+
+      <div class="filters" role="group" aria-label="Filter projects by type">
+        <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="system" aria-pressed="false">Systems</button>
+        <button class="chip" type="button" data-filter="dashboard" aria-pressed="false">Dashboards</button>
+        <button class="chip" type="button" data-filter="data" aria-pressed="false">Data</button>
+        <button class="chip" type="button" data-filter="website" aria-pressed="false">Websites</button>
+      </div>
+
+      <p class="sr-only" id="filter-status" role="status" aria-live="polite"></p>
+
+      <div class="project-grid">
+
+        <article class="project-card reveal" data-project="gym" data-tags="system">
+          <h3>Gym Management System</h3>
+          <p>
+            A manegement system for a new gym — registration, class
+            scheduling, attendance and renewals in one place.
+          </p>
+          <ul class="tag-list"><li>System</li><li>JavaScript</li></ul>
+          <button class="btn btn-small btn-ghost" type="button" data-open="gym">View details</button>
+        </article>
+
+        <article class="project-card reveal" data-project="wildlife" data-tags="system data">
+          <h3>Wildlife Calculation System</h3>
+          <p>
+            A tool that estimates wildlife population size and a Shannon
+            biodiversity index from survey counts. Researchers enter sightings per
+            species per transect, and the page calculates it
+          </p>
+          <ul class="tag-list"><li>Data tool</li><li>JavaScript</li></ul>
+          <button class="btn btn-small btn-ghost" type="button" data-open="wildlife">View details</button>
+        </article>
+
+        <article class="project-card reveal" data-project="study" data-tags="system">
+          <h3>Study Partner System</h3>
+          <p>
+            A study tool that helps students study , with shared flash
+            cards, preferred study times and study styles.
+          </p>
+          <ul class="tag-list"><li>Matching</li><li>Web app</li></ul>
+          <button class="btn btn-small btn-ghost" type="button" data-open="study">View details</button>
+        </article>
+
+        <article class="project-card reveal" data-project="ev" data-tags="dashboard data">
+          <h3>EV Car Dashboard</h3>
+          <p>
+            A dashboard for an electric vehicle showing battery percentage,
+            charging status, range estimate and drive efficiency.
+          </p>
+          <ul class="tag-list"><li>Dashboard</li><li>Data viz</li></ul>
+          <button class="btn btn-small btn-ghost" type="button" data-open="ev">View details</button>
+        </article>
+
+        <article class="project-card reveal" data-project="portfolio" data-tags="website">
+          <h3>Personal Portfolio Website</h3>
+          <p>
+            The weibsite show  a single self-contained HTML file with plain
+            CSS and vanilla JavaScript.
+          </p>
+          <ul class="tag-list"><li>HTML &amp; CSS</li><li>JavaScript</li></ul>
+          <button class="btn btn-small btn-ghost" type="button" data-open="portfolio">View details</button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section" aria-labelledby="about-title">
+    <div class="container about-grid">
+      <div class="reveal">
+        <p class="eyebrow">About me</p>
+        <h2 id="about-title">Learning by building</h2>
+        <p>
+          I'm an IT student at UNIMAS who got into web development by rebuilding
+          pages I liked to see how they worked. That habit stuck: every project
+          above started as "can I actually make this?"
+        </p>
+        <p>
+          I write plain HTML, CSS and JavaScript — no frameworks — because it
+          forces me to understand what's really happening in the browser. I test
+          with a keyboard before I call anything finished.
+        </p>
+      </div>
+
+      <div class="reveal">
+        <h3>What I work with</h3>
+        <ul class="skill-tags">
+          <li>HTML &amp; CSS</li>
+          <li>JavaScript</li>
+          <li>Python</li>
+          <li>SQL</li>
+          <li>Git</li>
+          <li>Figma</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section" aria-labelledby="contact-title">
+    <div class="container">
+      <header class="section-head reveal">
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-title">Let's talk</h2>
+        <p style="color:var(--muted)">Open to internships and study-group collaborations.</p>
+      </header>
+
+      <div class="contact-grid">
+
+        <form id="contact-form" class="reveal" novalidate>
+          <div class="form-field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" autocomplete="name"
+                   aria-describedby="name-error" required>
+            <span class="field-error" id="name-error" aria-live="polite"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" autocomplete="email"
+                   aria-describedby="email-error" required>
+            <span class="field-error" id="email-error" aria-live="polite"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" maxlength="600"
+                      aria-describedby="message-error char-count" required></textarea>
+            <span class="field-error" id="message-error" aria-live="polite"></span>
+            <small id="char-count" style="display:block;text-align:right;color:var(--muted)">0 / 600</small>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <aside class="contact-card reveal">
+          <h3>Other ways to reach me</h3>
+          <ul>
+            <li class="copy-row">
+              <a href="mailto:104490@siswa.unimas.my">104490@siswa.unimas.my</a>
+              <button class="btn-copy" type="button" id="copy-email"
+                      data-email="104490@siswa.unimas.my">Copy</button>
+            </li>
+            <li>Kota Samarahan, Sarawak (GMT+8)</li>
+          </ul>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p style="margin:0">© <span id="year">2026</span> Jasper Ling Bing Yao · Built with plain HTML, CSS &amp; JavaScript</p>
+    <a href="#home">Back to top ↑</a>
+  </div>
+</footer>
+
+<div class="modal" id="project-modal" role="dialog" aria-modal="true"
+     aria-labelledby="modal-title" hidden>
+  <div class="modal-card">
+    <button class="icon-btn modal-close" type="button" aria-label="Close project details">✕</button>
+    <h2 id="modal-title" style="font-size:1.3rem">Project</h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
+
+<script>
+(function () {
+  'use strict';
+
+  var $  = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  };
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1. Theme toggle */
+  var themeBtn = $('#theme-toggle');
+  var root = document.documentElement;
+
+  function setTheme(theme, persist) {
+    root.dataset.theme = theme;
+    var dark = theme === 'dark';
+    themeBtn.setAttribute('aria-pressed', String(dark));
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    themeBtn.firstElementChild.textContent = dark ? '☀️' : '🌙';
+    if (persist) { try { localStorage.setItem('jl-theme', theme); } catch (e) {} }
+  }
+
+  if (themeBtn) {
+    setTheme(root.dataset.theme || 'light', false);
+    themeBtn.addEventListener('click', function () {
+      setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
+    });
+  }
+
+  /* 2. Mobile menu */
+  var navToggle = $('#nav-toggle');
+  var navMenu = $('#nav-menu');
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', function () {
+      var open = navToggle.getAttribute('aria-expanded') !== 'true';
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      navMenu.classList.toggle('open', open);
+      navToggle.firstElementChild.textContent = open ? '✕' : '☰';
+    });
+    navMenu.addEventListener('click', function (e) {
+      if (!e.target.closest('a')) return;
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open menu');
+      navMenu.classList.remove('open');
+      navToggle.firstElementChild.textContent = '☰';
+    });
+  }
+
+  /* 3. Active section highlighting */
+  var navLinks = $$('.nav-link');
+
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    var sections = navLinks
+      .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(function (link) {
+          link.classList.toggle('active',
+            link.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(function (s) { sectionObserver.observe(s); });
+  }
+
+  /* 4. Scroll progress */
+  var progressBar = $('#scroll-progress');
+
+  if (progressBar) {
+    var queued = false;
+    function updateProgress() {
+      var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      progressBar.style.width = percent + '%';
+      progressBar.setAttribute('aria-valuenow', String(Math.round(percent)));
+      queued = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(updateProgress); }
+    }, { passive: true });
+    updateProgress();
+  }
+
+  /* 5. Reveal on scroll */
+  var reveals = $$('.reveal');
+
+  if (reveals.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      reveals.forEach(function (el) { el.classList.add('visible'); });
+    } else {
+      var revealObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach(function (el) { revealObserver.observe(el); });
+    }
+  }
+
+  /* 6. Project filtering */
+  var chips = $$('.chip');
+  var projectCards = $$('.project-card');
+  var filterStatus = $('#filter-status');
+
+  if (chips.length && projectCards.length) {
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var filter = chip.dataset.filter;
+
+        chips.forEach(function (other) {
+          var active = other === chip;
+          other.classList.toggle('is-active', active);
+          other.setAttribute('aria-pressed', String(active));
+        });
+
+        var shown = 0;
+        projectCards.forEach(function (card) {
+          var tags = (card.dataset.tags || '').split(' ');
+          var matches = filter === 'all' || tags.indexOf(filter) !== -1;
+          card.hidden = !matches;
+          if (matches) shown++;
+        });
+
+        if (filterStatus) {
+          filterStatus.textContent = shown + ' project' + (shown === 1 ? '' : 's') + ' shown.';
+        }
+      });
+    });
+  }
+
+  /* 7. Project detail modal */
+  var PROJECTS = {
+    gym: {
+      title: 'Gym Management System',
+      meta: 'Management system · 2025',
+      summary: 'A  system for a new gym, handling registration, class scheduling, attendance and membership renewals in a single page.',
+      features: [
+        'Member registration with a unique ID lookup at the front desk',
+        'Class scheduling with capacity limits and a waitlist',
+        'Renewal tracker that flags members due in the next 14 days',
+        'All state persisted in localStorage so the demo survives a refresh'
+      ],
+      tech: ['HTML', 'CSS Grid', 'JavaScript ES6', 'localStorage']
+    },
+    wildlife: {
+      title: 'Wildlife Calculation System',
+      meta: 'Data tool · 2025',
+      summary: 'A field-research tool that estimates wildlife population size and a Shannon biodiversity index from survey counts collected per species per transect.',
+      features: [
+        'Sightings entry per species per transect with inline validation',
+        'Shannon–Wiener biodiversity index calculated live',
+        'Population estimate with a 95% confidence interval',
+        'Sortable, exportable results table'
+      ],
+      tech: ['JavaScript ES6', 'Statistics', 'HTML tables', 'CSS']
+    },
+    study: {
+      title: 'Study Partner System',
+      meta: 'Matching · 2025',
+      summary: 'A study tool that helps students revise using shared flash cards, preferred study times and study styles.',
+      features: [
+        'study using subject, and study style',
+        'Shared flash-card',
+        'Accessible forms with clear, announced error messages'
+      ],
+      tech: ['HTML forms', 'JavaScript', 'CSS', 'localStorage']
+    },
+    ev: {
+      title: 'EV Car Dashboard',
+      meta: 'Dashboard · 2024',
+      summary: 'A  dashboard for an electric vehicle, showing battery percentage, charging status, range and drive efficiency.',
+      features: [
+        'Live gauge updates driven by a JavaScript simulation loop',
+        'Range-over-time chart drawn by hand in inline SVG',
+        'Four KPI tiles: battery %, charging status, range, efficiency',
+        'Layout tested at 200% browser zoom and on a 360px viewport'
+      ],
+      tech: ['SVG', 'JavaScript', 'CSS custom properties', 'setInterval']
+    },
+    portfolio: {
+      title: 'Personal Portfolio Website',
+      meta: 'Portfolio · 2026',
+      summary: 'The website that has a single self-contained HTML file with plain CSS and vanilla JavaScript, no frameworks or libraries.',
+      features: [
+        'Semantic landmarks, one h1, skip link and focus-visible outlines',
+        'Dark / light theme remembered in localStorage',
+        'Project filtering and a focus-trapped detail modal',
+        'Accessible contact form with live validation and announced errors'
+      ],
+      tech: ['HTML5', 'CSS3', 'JavaScript ES6', 'localStorage']
+    }
+  };
+
+  var modal = $('#project-modal');
+
+  if (modal) {
+    var modalCard = $('.modal-card', modal);
+    var modalTitle = $('#modal-title');
+    var modalBody = $('#modal-body');
+    var modalClose = $('.modal-close', modal);
+    var lastFocused = null;
+
+    function focusablesInModal() {
+      return $$('a[href], button:not([disabled]), input, textarea, [tabindex]:not([tabindex="-1"])', modalCard)
+        .filter(function (el) { return el.offsetParent !== null; });
+    }
+
+    function openModal(id, trigger) {
+      var data = PROJECTS[id];
+      if (!data) return;
+
+      lastFocused = trigger || document.activeElement;
+      modalTitle.textContent = data.title;
+
+      var features = data.features.map(function (f) { return '<li>' + f + '</li>'; }).join('');
+      var tech = data.tech.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+
+      modalBody.innerHTML =
+        '<p class="modal-meta">' + data.meta + '</p>' +
+        '<p>' + data.summary + '</p>' +
+        '<h3>What I built</h3><ul>' + features + '</ul>' +
+        '<h3>Tech</h3><ul class="tag-list">' + tech + '</ul>';
+
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    $$('[data-open]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        openModal(button.dataset.open, button);
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    modal.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeModal(); return; }
+      if (e.key !== 'Tab') return;
+
+      var items = focusablesInModal();
+      if (!items.length) return;
+
+      var first = items[0];
+      var last = items[items.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    });
+  }
+
+  /* 8. Contact form validation */
+  var form = $('#contact-form');
+
+  if (form) {
+    var nameEl = $('#name');
+    var emailEl = $('#email');
+    var msgEl = $('#message');
+    var statusEl = $('#form-status');
+    var counter = $('#char-count');
+
+    function setError(field, message) {
+      field.setAttribute('aria-invalid', 'true');
+      document.getElementById(field.id + '-error').textContent = message;
+    }
+    function clearError(field) {
+      field.removeAttribute('aria-invalid');
+      document.getElementById(field.id + '-error').textContent = '';
+    }
+
+    msgEl.addEventListener('input', function () {
+      counter.textContent = msgEl.value.length + ' / 600';
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      [nameEl, emailEl, msgEl].forEach(clearError);
+      statusEl.textContent = '';
+
+      var problems = [];
+      if (nameEl.value.trim().length < 2) problems.push([nameEl, 'Please enter your name.']);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailEl.value.trim())) {
+        problems.push([emailEl, 'Please enter a valid email address.']);
+      }
+      if (msgEl.value.trim().length < 10) problems.push([msgEl, 'Please write at least 10 characters.']);
+
+      if (problems.length) {
+        problems.forEach(function (pair) { setError(pair[0], pair[1]); });
+        statusEl.textContent = 'Please fix the highlighted fields.';
+        problems[0][0].focus();
+        return;
+      }
+
+      statusEl.textContent = 'Thanks, ' + nameEl.value.trim() + '! This demo form is front-end only.';
+      form.reset();
+      counter.textContent = '0 / 600';
+    });
+  }
+
+  /* 9. Copy email */
+  var copyBtn = $('#copy-email');
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var email = copyBtn.dataset.email || '';
+      var original = copyBtn.textContent;
+      var done = function (label) {
+        copyBtn.textContent = label;
+        setTimeout(function () { copyBtn.textContent = original; }, 1800);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(
+          function () { done('Copied!'); },
+          function () { done('Failed'); }
+        );
+      } else { done('Failed'); }
+    });
+  }
+
+  /* 10. Back-to-top */
+  var toTop = $('#to-top');
+
+  if (toTop) {
+    window.addEventListener('scroll', function () {
+      toTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
+
+  /* 11. Footer year */
+  var yearEl = $('#year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+})();
+</script>
+</body>
+</html>
